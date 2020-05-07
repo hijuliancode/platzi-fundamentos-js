@@ -14,6 +14,11 @@ Persona.prototype.soyAlta = function() {
   console.log(this.altura >= 1.80);
   return this.altura >= 1.80;
 }
+// No se puede ejecutar la anterior función con () => debido a que
+// This en arrow function no hace referencia a su entorno sino al superior de donde su función ha sido definida,
+// En eesta caso windows, this===window = true
+// Es mejor si este prototipo no usa arrow function sino function
+
 
 var julian = new Persona('Julian', 'Sosa', 1.80)
 var carlos = new Persona('Carlos', 'Sosa', 1.82)
@@ -26,8 +31,9 @@ carlos.soyAlta()
 valentina.soyAlta()
 ginna.soyAlta()
 
-// Modificando un prototipo
+// El contexto de las funciones: quién es this
 /**
-  En esta clase veremos cómo se modifican las clases de herencias.
-  JavaScript funciona con una estructura orientada a objetos y cada objeto tiene una propiedad privada que mantiene un enlace a otro objeto llamado prototipo.
+  En esta clase explicamos por qué al introducir el arrow function salió un error. El error del contexto de this en javascrip es uno de los errores más comunes.
+  Recuerda que dentro de la arrow function, this está haciendo referencia al espacio global, a windows.
+
  */
