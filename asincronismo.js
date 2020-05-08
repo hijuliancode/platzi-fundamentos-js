@@ -20,32 +20,40 @@ function onError(id) {
 }
 
 obtenerPersonaje(1) 
-  .then(function(personaje) {
-    console.log(`Hola yo soy ${personaje.name}`)
+  .then(personaje1 => {
+    console.log(`Hola yo soy ${personaje1.name}`)
+    return obtenerPersonaje(2) // Para devolver una nueva promesa,
+  })
+  .then(personaje2 => { // de esta manera .then va a estar devolviendo una promesa ya que el return (linea 25) nos devuelve una promesa
+    console.log(`Hola yo soy ${personaje2.name}`)
+    return obtenerPersonaje(3)
+  })
+  .then(personaje3 => {
+    console.log(`Hola yo soy ${personaje3.name}`)
+    return obtenerPersonaje(4)
+  })
+  .then(personaje4 => {
+    console.log(`Hola yo soy ${personaje4.name}`)
+    return obtenerPersonaje(5)
+  })
+  .then(personaje5 => {
+    console.log(`Hola yo soy ${personaje5.name}`)
+    return obtenerPersonaje(6)
+  })
+  .then(personaje6 => {
+    console.log(`Hola yo soy ${personaje6.name}`)
+    return obtenerPersonaje(7)
+  })
+  .then(personaje7 => {
+    console.log(`Hola yo soy ${personaje7.name}`)
   })
   .catch(onError)
 
-// Promesas
+// Promesas Encadenadas
 /**
-  En esta clase veremos las promesas, que son valores que aun no conocemos. Las promesas tienen tres estados:
-
-  - pending
-  - fullfilled
-  - rejected
-  
-  Las promesas se invocan de la siguiente forma:
-
-  new Promise( ( resolve, reject ) => {
-    // --- llamado asíncrono
-    if( todoOK ) {
-      // -- se ejecutó el llamado exitosamente
-      resolve()
-    } else {
-      // -- hubo un error en el llamado
-      reject()
-    }
-  } )
-
-  No olvides ver el material adjunto de esta clase. (PDF Promesas en repositorio)
-
+  A diferencia de los callbacks en el CallbackHell,
+  que terminan estando anidados unos dentro de otros,
+  cuando se usan Promesas la ejecución de las llamadas no se hacen de manera anidada sino de manera encadenada,
+  al mismo nivel una debajo de la otra,
+  lo que hace que el código sea mucho más legible y mantenible.
  */
