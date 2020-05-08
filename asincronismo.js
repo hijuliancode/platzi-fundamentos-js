@@ -5,26 +5,38 @@ const opts = { crossDomain: true }
 function obtenerPersonaje(id, callback) {
   const url = `${API_URL}${PEOPLE_URL.replace(':id', id)}`;
 
-  $.get(url, opts, function (persona) {
-    console.log(`Hola yo soy ${persona.name}`)
-    if (callback) {
-      callback()
-    }
-  });
-
+  $.get(url, opts, callback)
+   .fail((error) => {
+    console.log(`error =>`, error)
+    console.log(`Sucedio un error no se pudo obtener el personaje ${id}`);
+  })
 }
 
 // obtenerPersonaje(1, obtenerPersonaje(2)) // Al colocarlo así, el callback se va a ejecutar inmediatamente, incluso antes de obtener el personaje 1
 // Es importante que la función que se vaya a llamar, no se este ejecutando, que sea el declarar o la referencía a una función pero no su ejecución
 
 // CALL BACK HELL
-obtenerPersonaje(1, function() {
-  obtenerPersonaje(2, function() {
-    obtenerPersonaje(3, function() {
-      obtenerPersonaje(4, function() {
-        obtenerPersonaje(5, function() {
-          obtenerPersonaje(6, function() {
-            obtenerPersonaje(7)
+obtenerPersonaje(1, function(personaje) {
+  console.log(`Hola yo soy ${personaje.name}`)
+
+  obtenerPersonaje(2, function(personaje) {
+    console.log(`Hola yo soy ${personaje.name}`)
+
+    obtenerPersonaje(3, function(personaje) {
+      console.log(`Hola yo soy ${personaje.name}`)
+
+      obtenerPersonaje(4, function(personaje) {
+        console.log(`Hola yo soy ${personaje.name}`)
+
+        obtenerPersonaje(5, function(personaje) {
+          console.log(`Hola yo soy ${personaje.name}`)
+
+          obtenerPersonaje(6, function(personaje) {
+            console.log(`Hola yo soy ${personaje.name}`)
+
+            obtenerPersonaje(7, function(personaje) {
+              console.log(`Hola yo soy ${personaje.name}`)
+            })
           })
         })
       })
@@ -32,11 +44,8 @@ obtenerPersonaje(1, function() {
   })
 })
 
-// Manejando el Orden y el Asincronismo en JavaScript
+// Manejo de errores con callbacks
 /**
-  Una manera de asegurar que se respete la secuencia en que hemos
-  realizado múltiples tareas es utilizando callbacks, con lo que se ejecutará luego, en cada llamada.
-  
-  Lo importante es que el llamado al callback se haga a través de una función anónima.
-  Sin embargo, al hacerlo de esta manera generamos una situación poco deseada llamada CallbackHell.
+  Para solucionar el problema de quedarnos sin conexión, u otro error similar,
+  en medio de una sucesión de callbacks utilizamos el método fail().
  */
