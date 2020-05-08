@@ -14,7 +14,7 @@ const onPeopleResponse = function (persona, status) { // Esta función solo se v
 $.get(personaUrl, opts, onPeopleResponse);
 
 
-// Dígita
+// Callbacks
 /**
   En esta clase aprenderemos que son los callbacks y usaremos una librería externa que se llama jQuery.
 
