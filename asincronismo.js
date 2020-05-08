@@ -1,29 +1,24 @@
-// ¿Cómo ejecuta javascript algo de manera asincrona?
+const API_URL = 'https://swapi.dev/api/'
+const PEOPLE_URL = 'people/:id';
 
-  console.log('a')
-  setTimeout(() => { console.log('b') }, 0)  // Lo que hace esta linea es decirle al navegador, ejecutame esta función en 0 segundos
-  // Entonces responde, Ok, voy a tomar esta función y la voy a poner en la cola de tareas, que es una cola de ejecución aparte
-  // Javascript sigue ejecutando su código normalmente,
-  // A pesar de que esta listo para ejecutarse, JS no lo va a hacer hasta que termine de ejecutar su programa principal
-  console.log('c')
+const idPersona = prompt('A quien quieres llamar?, Dígita un número mayor a 1');
 
-  // OTRO EJEMPLO (otro gato, dijo el chavo => https://youtu.be/428CjpkNnQE)
+const personaUrl = `${API_URL}${PEOPLE_URL.replace(':id', idPersona)}`;
+const opts = { crossDomain: true }
 
-  setTimeout(() => {
-    console.log('d')
-  }, 2000); // Este es un tiempo de ejecución minimo, porque nada garantiza que no estemos bloqueando el event loop (la siguiente linea)
+const onPeopleResponse = function (persona, status) { // Esta función solo se va a ejecutar si el request es exitoso y la va a ejecutar $.get
+  console.log(arguments); // arguments Es una variable que tienen todas las funciones que nos da un array con los parametros que recibe la función
+  console.log(`Hola yo soy ${persona.name}`)
+}
 
-  for (let i = 0; i < 10000; i++) {
-    console.log('Ejecutando ...')
-  }
+$.get(personaUrl, opts, onPeopleResponse);
 
-// Cómo funciona el tiempo en JavaScript
+
+// Dígita
 /**
-  En principio, cualquier tarea que se haya delegado al navegador a través de un callback,
-  deberá esperar hasta que todas las instrucciones del programa principal se hayan ejecutado.
+  En esta clase aprenderemos que son los callbacks y usaremos una librería externa que se llama jQuery.
+
+  Un callback es una función que se pasa a otra función como un argumento.
+  Esta función se invoca, después, dentro de la función externa para completar alguna acción.
   
-  Por esta razón el tiempo de espera definido en funciones como setTimeout,
-  no garantizan que el callback se ejecute en ese tiempo exactamente,
-  sino en cualquier momento a partir de allí,
-  sólo cuando la cola de tareas se haya vaciado
  */
