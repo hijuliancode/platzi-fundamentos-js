@@ -2,50 +2,50 @@ const API_URL = 'https://swapi.dev/api/'
 const PEOPLE_URL = 'people/:id';
 const opts = { crossDomain: true }
 
-function obtenerPersonaje(id, callback) {
-  const url = `${API_URL}${PEOPLE_URL.replace(':id', id)}`;
+function obtenerPersonaje(id) {
+  return new Promise((resolve, reject) => {
+    const url = `${API_URL}${PEOPLE_URL.replace(':id', id)}`;
+    
+    $.get(url, opts, function(data) {
+      resolve(data); // esta función no se va a ejecutar hasta que la function se ejecute, es decir el $.get sea exitoso
+    })
+    .fail(() => reject(id))
 
-  $.get(url, opts, callback)
-   .fail((error) => {
-    console.log(`error =>`, error)
-    console.log(`Sucedio un error no se pudo obtener el personaje ${id}`);
-  })
+  });
+
 }
 
-// obtenerPersonaje(1, obtenerPersonaje(2)) // Al colocarlo así, el callback se va a ejecutar inmediatamente, incluso antes de obtener el personaje 1
-// Es importante que la función que se vaya a llamar, no se este ejecutando, que sea el declarar o la referencía a una función pero no su ejecución
+function onError(id) {
+  console.log(`Error al obtener la información del personaje ${id}`)
+}
 
-// CALL BACK HELL
-obtenerPersonaje(1, function(personaje) {
-  console.log(`Hola yo soy ${personaje.name}`)
-
-  obtenerPersonaje(2, function(personaje) {
+obtenerPersonaje(1) 
+  .then(function(personaje) {
     console.log(`Hola yo soy ${personaje.name}`)
-
-    obtenerPersonaje(3, function(personaje) {
-      console.log(`Hola yo soy ${personaje.name}`)
-
-      obtenerPersonaje(4, function(personaje) {
-        console.log(`Hola yo soy ${personaje.name}`)
-
-        obtenerPersonaje(5, function(personaje) {
-          console.log(`Hola yo soy ${personaje.name}`)
-
-          obtenerPersonaje(6, function(personaje) {
-            console.log(`Hola yo soy ${personaje.name}`)
-
-            obtenerPersonaje(7, function(personaje) {
-              console.log(`Hola yo soy ${personaje.name}`)
-            })
-          })
-        })
-      })
-    })
   })
-})
+  .catch(onError)
 
-// Manejo de errores con callbacks
+// Promesas
 /**
-  Para solucionar el problema de quedarnos sin conexión, u otro error similar,
-  en medio de una sucesión de callbacks utilizamos el método fail().
+  En esta clase veremos las promesas, que son valores que aun no conocemos. Las promesas tienen tres estados:
+
+  - pending
+  - fullfilled
+  - rejected
+  
+  Las promesas se invocan de la siguiente forma:
+
+  new Promise( ( resolve, reject ) => {
+    // --- llamado asíncrono
+    if( todoOK ) {
+      // -- se ejecutó el llamado exitosamente
+      resolve()
+    } else {
+      // -- hubo un error en el llamado
+      reject()
+    }
+  } )
+
+  No olvides ver el material adjunto de esta clase. (PDF Promesas en repositorio)
+
  */
