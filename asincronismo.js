@@ -5,11 +5,25 @@ const opts = { crossDomain: true }
 function obtenerPersonaje(id) {
   return new Promise((resolve, reject) => {
     const url = `${API_URL}${PEOPLE_URL.replace(':id', id)}`;
-    
-    $.get(url, opts, function(data) {
-      resolve(data); // esta función no se va a ejecutar hasta que la function se ejecute, es decir el $.get sea exitoso
-    })
-    .fail(() => reject(id))
+    var data;
+
+    setTimeout(()=> {
+      this.data = {
+        name: 'Meraki Elämäni'
+      }
+      if(this.data) {
+        resolve(this.data)
+      }
+      else {
+        reject(id)
+      }
+    }, 5000)
+
+
+    // $.get(url, opts, function(data) {
+    //   resolve(data); // esta función no se va a ejecutar hasta que la function se ejecute, es decir el $.get sea exitoso
+    // })
+    // .fail(() => reject(id))
 
   });
 
