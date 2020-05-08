@@ -20,7 +20,7 @@ obtenerPersonaje(3)
 obtenerPersonaje(4)
 obtenerPersonaje(5)
 
-// Callbacks
+// Haciendo Multiples Request
 /**
   En esta clase accederemos a múltiples datos al mismo tiempo. Continuaremos trabajando con los jQuery y swapi  
  */
