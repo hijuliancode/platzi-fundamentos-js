@@ -1,20 +1,35 @@
 const btnStart = document.getElementById('btnStart'),
-      btnBlue = document.getElementById('btnBlue'),
-      btnGreen = document.getElementById('btnGreen'),
-      btnRed = document.getElementById('btnRed'),
-      btnYellow = document.getElementById('btnYellow');
+      colorBlue = document.getElementById('btnBlue'),
+      colorGreen = document.getElementById('btnGreen'),
+      colorRed = document.getElementById('btnRed'),
+      colorYellow = document.getElementById('btnYellow');
 
 class Game {
   constructor() {
+    this.sequence;
+    this.level;
+    this.colors;
+
     this.initialize()
+    this.generateSequence()
   }
 
   initialize () {
-    console.log('initialize')
     btnStart.setAttribute('disabled', true)
+    this.level = 1
+    this.colors = {
+      colorBlue,
+      colorGreen,
+      colorRed,
+      colorYellow
+    }
+  }
+  generateSequence() {
+    // Indicar que me genere un nuevo array, .fill inicializa todos los campos en 0
+    this.sequence = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
   }
 }
 
 function startGame() {
-  let game = new Game();
+  window.game = new Game();
 }
