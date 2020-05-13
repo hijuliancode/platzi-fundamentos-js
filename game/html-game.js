@@ -7,6 +7,7 @@ const btnStart = document.getElementById('btnStart'),
 
 class Game {
   constructor() {
+    this.initialize = this.initialize.bind(this)
     this.sequence;
     this.level;
     this.sublevel;
@@ -20,13 +21,20 @@ class Game {
   initialize () {
     this.nextLevel = this.nextLevel.bind(this)
     this.selectColor = this.selectColor.bind(this)
-    btnStart.setAttribute('disabled', true)
+    this.toggleBtnStart()
     this.level = 1
     this.colors = {
       colorBlue,
       colorGreen,
       colorRed,
       colorYellow
+    }
+  }
+  toggleBtnStart() {
+    if(btnStart.hasAttribute('disabled')) {
+      btnStart.removeAttribute('disabled')
+    } else {
+      btnStart.setAttribute('disabled', true)
     }
   }
   generateSequence() {
@@ -131,14 +139,25 @@ class Game {
         this.level++
         this.removeEventsClick()
         if (this.level === (LAST_LEVEL + 1)) {
-          // Ganó!
+          this.wonTheGame( )
         } else {
           setTimeout(this.nextLevel, 1500);
         }
       }
     } else {
-      // Perdió
+      this.lostTheGame()
     }
+  }
+  wonTheGame() {
+    swal('Ganaste!', 'Felicitaciones', 'success')
+      .then(this.initialize())
+  }
+  lostTheGame() {
+    swal('Perdiste!', 'Lo lamentamos :(', 'error')
+      .then(() => {
+        this.removeEventsClick()
+        this.initialize()
+      })
   }
 }
 
