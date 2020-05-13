@@ -17,8 +17,9 @@ class Game {
 
   initialize () {
     console.log('initialize')
+    this.selectColor = this.selectColor.bind(this)
     btnStart.setAttribute('disabled', true)
-    this.level = 3
+    this.level = 1
     this.colors = {
       colorBlue,
       colorGreen,
@@ -33,6 +34,7 @@ class Game {
   }
   nextLevel() {
     this.illuminateSequence()
+    this.addEventClick()
   }
   illuminateSequence() {
     console.log('this.level', this.level)
@@ -96,6 +98,16 @@ class Game {
         this.colors[color].classList.add('btn-outline-warn')
         break;
     }
+  }
+  addEventClick() {
+    this.colors.colorBlue.addEventListener('click', this.selectColor)
+    this.colors.colorGreen.addEventListener('click', this.selectColor)
+    this.colors.colorRed.addEventListener('click', this.selectColor)
+    this.colors.colorYellow.addEventListener('click', this.selectColor)
+  }
+  selectColor(ev) {
+    console.log('selectColor ev', ev)
+    console.log('selectColor this', this)
   }
 }
 
