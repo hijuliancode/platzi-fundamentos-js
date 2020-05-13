@@ -2,21 +2,23 @@ const btnStart = document.getElementById('btnStart'),
       colorBlue = document.getElementById('btnBlue'),
       colorGreen = document.getElementById('btnGreen'),
       colorRed = document.getElementById('btnRed'),
-      colorYellow = document.getElementById('btnYellow');
+      colorYellow = document.getElementById('btnYellow')
+      LAST_LEVEL = 10;
 
 class Game {
   constructor() {
     this.sequence;
     this.level;
+    this.sublevel;
     this.colors;
 
     this.initialize()
     this.generateSequence()
-    this.nextLevel()
+    setTimeout(this.nextLevel, 500)
   }
 
   initialize () {
-    console.log('initialize')
+    this.nextLevel = this.nextLevel.bind(this)
     this.selectColor = this.selectColor.bind(this)
     btnStart.setAttribute('disabled', true)
     this.level = 1
@@ -29,23 +31,20 @@ class Game {
   }
   generateSequence() {
     // Indicar que me genere un nuevo array, .fill inicializa todos los campos en 0
-    this.sequence = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
-    console.log('this.sequence', this.sequence)
+    this.sequence = new Array(LAST_LEVEL).fill(0).map(n => Math.floor(Math.random() * 4))
   }
   nextLevel() {
+    this.sublevel = 0
     this.illuminateSequence()
-    this.addEventClick()
+    this.addEventsClick()
   }
   illuminateSequence() {
-    console.log('this.level', this.level)
     for (let i = 0; i < this.level; i++) {
       const color = this.numberToColor(this.sequence[i])
-      console.log('illuminateSequence color', color)
       setTimeout(() => this.illuminateColor(color), 1000 * i);
     }
   }
   numberToColor(num) {
-    console.log('numberToColor', num)
     switch (num) {
       case 0:
         return 'colorBlue'
@@ -57,8 +56,19 @@ class Game {
         return 'colorYellow'
     }
   }
+  colorToNumber(color) {
+    switch (color) {
+      case 'colorBlue':
+        return 0
+      case 'colorGreen':
+        return 1
+      case 'colorRed':
+        return 2
+      case 'colorYellow':
+        return 3
+    }
+  }
   illuminateColor(color) {
-    console.log('illuminateColor', color)
     switch (color) {
       case 'colorBlue':
         this.colors[color].classList.remove('btn-outline-primary')
@@ -99,15 +109,36 @@ class Game {
         break;
     }
   }
-  addEventClick() {
+  addEventsClick() {
     this.colors.colorBlue.addEventListener('click', this.selectColor)
     this.colors.colorGreen.addEventListener('click', this.selectColor)
     this.colors.colorRed.addEventListener('click', this.selectColor)
     this.colors.colorYellow.addEventListener('click', this.selectColor)
   }
+  removeEventsClick() {
+    this.colors.colorBlue.removeEventListener('click', this.selectColor)
+    this.colors.colorGreen.removeEventListener('click', this.selectColor)
+    this.colors.colorRed.removeEventListener('click', this.selectColor)
+    this.colors.colorYellow.removeEventListener('click', this.selectColor)
+  }
   selectColor(ev) {
-    console.log('selectColor ev', ev)
-    console.log('selectColor this', this)
+    const colorName = ev.target.dataset.color
+    const colorNumber = this.colorToNumber(colorName)
+    this.illuminateColor(colorName)
+    if (colorNumber === this.sequence[this.sublevel]) {
+      this.sublevel++
+      if (this.sublevel === this.level) {
+        this.level++
+        this.removeEventsClick()
+        if (this.level === (LAST_LEVEL + 1)) {
+          // Ganó!
+        } else {
+          setTimeout(this.nextLevel, 1500);
+        }
+      }
+    } else {
+      // Perdió
+    }
   }
 }
 
